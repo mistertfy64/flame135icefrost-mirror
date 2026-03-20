@@ -6,7 +6,7 @@ export default function FeaturedHotelCardPanel() {
       <div className="flex flex-row justify-between">
         <HotelCard
           name="mistertfy64's Hotel"
-          location="The Algebra Playground"
+          location="Equation Playground"
           tel="1234567890"
         />
         <HotelCard
