@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function TopMenu() {
   return (
-    <header className="w-full flex justify-center py-[4px]">
-      <div className="w-[var(--general-width)] bg-white h-[4vh] flex justify-between items-center">
+    <header className="w-full flex justify-center py-[4px] bg-white">
+      <div className="w-[var(--general-width)] h-[4vh] flex justify-between items-center">
         <div>
           <Link href="/">Group135</Link>
         </div>
