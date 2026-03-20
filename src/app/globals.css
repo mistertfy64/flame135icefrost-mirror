@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+/*
+  Note: Some extensions (like the one @mistertfy64 is using)
+  may cause this to give a false-positive Unknown at rule warning.
+  Ignore it.
+*/
+@theme {
+  --color-primary: oklch(64.5% 0.246 16.439);
+}
+
+:root {
+  --general-width: 80%;
+}
