@@ -8,6 +8,9 @@ const sarabun = Sarabun({
   subsets: ["latin", "thai"]
 });
 
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "@/theme";
+
 export const metadata: Metadata = {
   title: "Group135 Frontend",
   description: "someone changed the group name to something uncool :("
@@ -21,9 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body className={`${sarabun.className}`}>
+      <body className={`${sarabun.className} bg-stone-50`}>
         <Header />
-        {children}
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </body>
     </html>
   );
