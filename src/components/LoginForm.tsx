@@ -31,7 +31,7 @@ export default function RegisterForm() {
           Login
         </button>
         <span className="mt-[4px] text-sm text-center">
-          Don&#39;t have an account?
+          Don&#39;t have an account? &nbsp;
           <Link className="text-primary underline" href="/login">
             Register here!
           </Link>
