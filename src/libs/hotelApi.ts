@@ -55,10 +55,8 @@ export function formatHotelLocation(hotel: Hotel): string {
 
 export interface Booking {
   _id?: string;
-  hotelId: string;
-  hotel?: {
-    name: string;
-  };
+  hotelId?: string;
+  hotel?: string;
   name?: string;
   checkInDate: string;
   nights: number;

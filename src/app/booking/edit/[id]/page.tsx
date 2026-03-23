@@ -86,10 +86,10 @@ export default function EditBookingPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        name === "roomCount" || name === "guestCount" ? parseInt(value) : value
+      [name]: value
     }));
   };
 
@@ -117,7 +117,7 @@ export default function EditBookingPage() {
     }
 
     const booking: Booking = {
-      hotelId: formData.hotelId,
+      hotel: formData.hotelId,
       checkInDate: formData.checkInDate,
       checkOutDate: formData.checkOutDate,
       nights: getDifferenceInDays(formData.checkInDate, formData.checkOutDate),
