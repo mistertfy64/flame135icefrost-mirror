@@ -27,6 +27,7 @@ export default function AdminBookingsPage() {
     if (token) {
       loadBookings();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const loadBookings = async () => {
