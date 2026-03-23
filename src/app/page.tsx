@@ -13,8 +13,8 @@ export default function Home() {
       <footer className="border-t border-[#d6d8dc] py-8 text-center text-xs text-[#8a909a]">
         © 2026 mistertfy64, Meep2447, kaikubEZ
         <br />
-        This is made as a submission for an university assignment. This app does
-        not make any real bookings.
+        This was made as a submission for an university assignment. This app
+        does not make any real bookings.
       </footer>
     </div>
   );
