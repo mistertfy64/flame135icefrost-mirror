@@ -1,4 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import DeleteBookingButton from "@/components/DeleteBookingButton";
 import { getMyBookings } from "@/libs/hotelApi";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -77,9 +78,7 @@ export default async function BookingPage() {
                         Edit
                       </button>
                     </Link>
-                    <button className="rounded-md border border-red-500 px-4 py-2 text-sm font-semibold text-red-500 hover:bg-red-500 hover:text-white transition">
-                      Delete
-                    </button>
+                    <DeleteBookingButton bookingId={booking._id!} />
                   </div>
                 </div>
               </div>
