@@ -2,6 +2,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import getMe from "@/libs/getMe";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import LogoutForm from "./LogoutForm";
 
 export default async function TopMenu() {
   const session = await getServerSession(authOptions);
@@ -37,15 +38,23 @@ export default async function TopMenu() {
             Hotels
           </Link>
 
-          <Link className="hover:text-[var(--brand-500)]" href="/login">
-            Login
-          </Link>
-
-          <Link href="/register">
-            <button className="cursor-pointer rounded-md bg-[var(--brand-500)] px-4 py-1 text-[11px] font-semibold text-white hover:bg-[var(--brand-600)]">
-              Register
-            </button>
-          </Link>
+          {session ? (
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-[#35404d]">{me?.email}</span>
+              <LogoutForm />
+            </div>
+          ) : (
+            <>
+              <Link className="hover:text-[var(--brand-500)]" href="/login">
+                Login
+              </Link>
+              <Link href="/register">
+                <button className="cursor-pointer rounded-md bg-[var(--brand-500)] px-4 py-1 text-[11px] font-semibold text-white hover:bg-[var(--brand-600)]">
+                  Register
+                </button>
+              </Link>
+            </>
+          )}
         </nav>
       </div>
     </header>

@@ -12,15 +12,11 @@ export default function LogoutForm() {
   };
 
   return (
-    <div className="bg-white w-[37.5%] p-[16px] mt-[8px] rounded-lg shadow-lg">
-      <div className="flex flex-col justify-center">
-        <button
-          onClick={handleLogout}
-          className="cursor-pointer rounded-md bg-primary text-white px-[16px] py-[8px] text-lg"
-        >
-          Logout
-        </button>
-      </div>
-    </div>
+    <button
+      onClick={handleLogout}
+      className="cursor-pointer rounded-md bg-[var(--brand-500)] px-4 py-1 text-[11px] font-semibold text-white hover:bg-[var(--brand-600)]"
+    >
+      Logout
+    </button>
   );
 }

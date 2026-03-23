@@ -1,10 +1,11 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { SyntheticEvent, useState } from "react";
 
 export default function LoginForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const errorMessage = searchParams.get("error");
 
