@@ -7,9 +7,10 @@ import { SyntheticEvent, useState } from "react";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
+  const errorMessage = searchParams.get("error");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const errorMessage = searchParams.get("error");
 
   const handleLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
