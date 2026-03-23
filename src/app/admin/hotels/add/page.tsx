@@ -19,7 +19,7 @@ export default function AddHotelPage() {
     postalcode: "",
     tel: "",
     region: "",
-    imgSrc: "",
+    imgSrc: ""
   });
 
   const token = session?.user?.token || "";
@@ -28,7 +28,7 @@ export default function AddHotelPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -91,7 +91,9 @@ export default function AddHotelPage() {
               />
             </svg>
           </Link>
-          <h1 className="text-2xl font-semibold text-gray-800">Add New Hotel</h1>
+          <h1 className="text-2xl font-semibold text-gray-800">
+            Add New Hotel
+          </h1>
         </div>
 
         {/* Form */}
