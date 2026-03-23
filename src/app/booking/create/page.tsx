@@ -1,9 +1,15 @@
 "use client";
-import { fetchAllHotels, createBooking, type Hotel, type Booking } from "@/libs/hotelApi";
+import {
+  fetchAllHotels,
+  createBooking,
+  type Hotel,
+  type Booking
+} from "@/libs/hotelApi";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, SyntheticEvent } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import getDifferenceInDays from "@/app/libs/getDifferenceInDays";
 
 export default function CreateBookingPage() {
   const router = useRouter();
@@ -13,10 +19,10 @@ export default function CreateBookingPage() {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     hotelId: "",
-    checkIn: "",
-    checkOut: "",
+    checkInDate: "",
+    checkOutDate: "",
     roomCount: 1,
-    guestCount: 1,
+    guestCount: 1
   });
 
   useEffect(() => {
@@ -27,11 +33,14 @@ export default function CreateBookingPage() {
     loadHotels();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "roomCount" || name === "guestCount" ? parseInt(value) : value,
+      [name]:
+        name === "roomCount" || name === "guestCount" ? parseInt(value) : value
     }));
   };
 
@@ -40,7 +49,7 @@ export default function CreateBookingPage() {
     setLoading(true);
     setError("");
 
-    if (!formData.hotelId || !formData.checkIn || !formData.checkOut) {
+    if (!formData.hotelId || !formData.checkInDate || !formData.checkOutDate) {
       setError("Please fill in all required fields");
       setLoading(false);
       return;
@@ -48,10 +57,11 @@ export default function CreateBookingPage() {
 
     const booking: Booking = {
       hotelId: formData.hotelId,
-      checkIn: formData.checkIn,
-      checkOut: formData.checkOut,
+      checkInDate: formData.checkInDate,
+      checkOutDate: formData.checkOutDate,
+      nights: getDifferenceInDays(formData.checkInDate, formData.checkOutDate),
       roomCount: formData.roomCount,
-      guestCount: formData.guestCount,
+      guestCount: formData.guestCount
     };
 
     const result = await createBooking(booking, session?.user?.token || "");
@@ -68,7 +78,9 @@ export default function CreateBookingPage() {
     <div className="min-h-screen bg-[#f5f5f5] py-12">
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="rounded-2xl border border-white/20 bg-white/95 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.1)] backdrop-blur-sm">
-          <h1 className="mb-8 text-2xl font-bold text-[var(--text-heading)]">Create Booking</h1>
+          <h1 className="mb-8 text-2xl font-bold text-[var(--text-heading)]">
+            Create Booking
+          </h1>
 
           {error && (
             <div className="mb-6 rounded-lg bg-red-100 p-4 text-sm text-red-800">
@@ -104,8 +116,8 @@ export default function CreateBookingPage() {
                 </label>
                 <input
                   type="date"
-                  name="checkIn"
-                  value={formData.checkIn}
+                  name="checkInDate"
+                  value={formData.checkInDate}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
                   required
@@ -117,8 +129,8 @@ export default function CreateBookingPage() {
                 </label>
                 <input
                   type="date"
-                  name="checkOut"
-                  value={formData.checkOut}
+                  name="checkOutDate"
+                  value={formData.checkOutDate}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
                   required
