@@ -7,6 +7,8 @@ export default async function BookingPage() {
   const session = await getServerSession(authOptions);
   const token = session?.user?.token || "";
 
+  const ONE_DAY = 1000 * 60 * 60 * 24;
+
   const bookingsResponse = await getMyBookings(token);
   const bookings = bookingsResponse.success ? bookingsResponse.data || [] : [];
 
@@ -14,7 +16,9 @@ export default async function BookingPage() {
     <div className="min-h-screen bg-[#f5f5f5] py-8">
       <div className="mx-auto w-[var(--general-width)] max-w-6xl px-4">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-[var(--text-heading)]">My Bookings</h1>
+          <h1 className="text-3xl font-bold text-[var(--text-heading)]">
+            My Bookings
+          </h1>
           <Link href="/booking/create">
             <button className="rounded-lg bg-[var(--brand-500)] px-6 py-2 text-sm font-semibold text-white hover:bg-[var(--brand-600)]">
               + New Booking
@@ -24,7 +28,9 @@ export default async function BookingPage() {
 
         {bookings.length === 0 ? (
           <div className="rounded-lg bg-white p-8 text-center">
-            <p className="text-[#8a909a]">No bookings yet. Create your first booking!</p>
+            <p className="text-[#8a909a]">
+              No bookings yet. Create your first booking!
+            </p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -41,17 +47,14 @@ export default async function BookingPage() {
                     <div className="mt-3 grid grid-cols-2 gap-4 text-sm text-[#8a909a]">
                       <div>
                         <span className="font-medium">Check-in:</span>{" "}
-                        {new Date(booking.checkIn).toLocaleDateString()}
+                        {new Date(booking.checkInDate).toLocaleDateString()}
                       </div>
                       <div>
                         <span className="font-medium">Check-out:</span>{" "}
-                        {new Date(booking.checkOut).toLocaleDateString()}
-                      </div>
-                      <div>
-                        <span className="font-medium">Rooms:</span> {booking.roomCount}
-                      </div>
-                      <div>
-                        <span className="font-medium">Guests:</span> {booking.guestCount}
+                        {new Date(
+                          new Date(booking.checkInDate).getTime() +
+                            booking.nights * ONE_DAY
+                        ).toLocaleDateString()}
                       </div>
                     </div>
                     {booking.status && (

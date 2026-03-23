@@ -22,7 +22,7 @@ export interface HotelsResponse {
 export async function fetchAllHotels(): Promise<Hotel[]> {
   try {
     const response = await fetch(API_URL, {
-      next: { revalidate: 10 },
+      next: { revalidate: 10 }
     });
     const data: HotelsResponse = await response.json();
     if (data.success && data.data) {
@@ -35,7 +35,9 @@ export async function fetchAllHotels(): Promise<Hotel[]> {
   }
 }
 
-export async function fetchTopBookedHotels(limit: number = 3): Promise<Hotel[]> {
+export async function fetchTopBookedHotels(
+  limit: number = 3
+): Promise<Hotel[]> {
   try {
     const hotels = await fetchAllHotels();
     return hotels
@@ -55,8 +57,9 @@ export interface Booking {
   _id?: string;
   hotelId: string;
   hotelName?: string;
-  checkIn: string;
-  checkOut: string;
+  checkInDate: string;
+  nights: number;
+  checkOutDate?: string;
   roomCount: number;
   guestCount: number;
   status?: string;
@@ -68,14 +71,15 @@ export async function createBooking(
   token: string
 ): Promise<{ success: boolean; data?: Booking; message?: string }> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
     const response = await fetch(`${baseUrl}/api/v1/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(booking),
+      body: JSON.stringify(booking)
     });
     const data = await response.json();
     return data;
@@ -89,12 +93,13 @@ export async function getMyBookings(
   token: string
 ): Promise<{ success: boolean; data?: Booking[]; message?: string }> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
-    const response = await fetch(`${baseUrl}/api/v1/bookings/my-bookings`, {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
+    const response = await fetch(`${baseUrl}/api/v1/bookings`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        Authorization: `Bearer ${token}`
+      }
     });
     const data = await response.json();
     return data;
@@ -110,14 +115,15 @@ export async function updateBooking(
   token: string
 ): Promise<{ success: boolean; data?: Booking; message?: string }> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
     const response = await fetch(`${baseUrl}/api/v1/bookings/${bookingId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(booking),
+      body: JSON.stringify(booking)
     });
     const data = await response.json();
     return data;
@@ -132,12 +138,13 @@ export async function deleteBooking(
   token: string
 ): Promise<{ success: boolean; message?: string }> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
     const response = await fetch(`${baseUrl}/api/v1/bookings/${bookingId}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        Authorization: `Bearer ${token}`
+      }
     });
     const data = await response.json();
     return data;

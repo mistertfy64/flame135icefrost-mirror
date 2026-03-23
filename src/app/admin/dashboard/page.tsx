@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-
 interface StatCard {
   title: string;
   value: string | number;
@@ -15,7 +14,7 @@ interface Booking {
   id: string;
   user: string;
   hotel: string;
-  checkIn: string;
+  checkInDate: string;
   nights: number;
   created: string;
 }
@@ -26,26 +25,26 @@ export default function AdminDashboard() {
       title: "Total Hotels",
       value: 6,
       icon: "🏨",
-      color: "bg-blue-100",
+      color: "bg-blue-100"
     },
     {
       title: "Total Bookings",
       value: 0,
       icon: "📅",
-      color: "bg-green-100",
+      color: "bg-green-100"
     },
     {
       title: "Total Users",
       value: 2,
       icon: "👥",
-      color: "bg-orange-100",
+      color: "bg-orange-100"
     },
     {
       title: "Active Bookings",
       value: 2,
       icon: "⚡",
-      color: "bg-purple-100",
-    },
+      color: "bg-purple-100"
+    }
   ]);
 
   const [recentBookings, setRecentBookings] = useState<Booking[]>([
@@ -53,18 +52,18 @@ export default function AdminDashboard() {
       id: "1",
       user: "John Doe",
       hotel: "Mountain View Lodge",
-      checkIn: "May 20, 2026",
+      checkInDate: "May 20, 2026",
       nights: 3,
-      created: "Mar 16, 2026",
+      created: "Mar 16, 2026"
     },
     {
       id: "2",
       user: "John Doe",
       hotel: "Grand Palace Hotel",
-      checkIn: "Apr 15, 2026",
+      checkInDate: "Apr 15, 2026",
       nights: 2,
-      created: "Mar 15, 2026",
-    },
+      created: "Mar 15, 2026"
+    }
   ]);
 
   const [loading, setLoading] = useState(true);
@@ -122,18 +121,20 @@ export default function AdminDashboard() {
                     {stat.value}
                   </p>
                 </div>
-                <div className={`w-12 h-12 ${stat.color} rounded-lg flex items-center justify-center text-xl`}>
+                <div
+                  className={`w-12 h-12 ${stat.color} rounded-lg flex items-center justify-center text-xl`}
+                >
                   {stat.icon}
                 </div>
               </div>
-              <Link 
+              <Link
                 href={
-                  stat.title === "Total Hotels" 
-                    ? "/admin/hotels" 
+                  stat.title === "Total Hotels"
+                    ? "/admin/hotels"
                     : stat.title === "Total Bookings"
-                    ? "/admin/bookings"
-                    : "#"
-                } 
+                      ? "/admin/bookings"
+                      : "#"
+                }
                 className="text-blue-500 text-sm font-medium hover:underline"
               >
                 View all →
@@ -226,7 +227,7 @@ export default function AdminDashboard() {
                       {booking.hotel}
                     </td>
                     <td className="px-6 py-4 text-[#6b7280]">
-                      {booking.checkIn}
+                      {booking.checkInDate}
                     </td>
                     <td className="px-6 py-4 text-[#6b7280]">
                       {booking.nights}
