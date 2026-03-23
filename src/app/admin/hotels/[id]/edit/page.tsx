@@ -1,15 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { createHotel } from "@/libs/adminApi";
+import { getHotelById, updateHotel } from "@/libs/adminApi";
 
-export default function AddHotelPage() {
+export default function EditHotelPage() {
   const router = useRouter();
+  const params = useParams();
+  const hotelId = params.id as string;
   const { data: session } = useSession();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
@@ -24,6 +27,33 @@ export default function AddHotelPage() {
 
   const token = session?.user?.token || "";
 
+  useEffect(() => {
+    if (token && hotelId) {
+      loadHotel();
+    }
+  }, [token, hotelId]);
+
+  const loadHotel = async () => {
+    setLoading(true);
+    const result = await getHotelById(hotelId, token);
+    if (result.success && result.data) {
+      const hotel = result.data;
+      setFormData({
+        name: hotel.name,
+        address: hotel.address,
+        district: hotel.district,
+        province: hotel.province,
+        postalcode: hotel.postalcode,
+        tel: hotel.tel || "",
+        region: hotel.region,
+        imgSrc: hotel.imgSrc || "",
+      });
+    } else {
+      setError("Failed to load hotel");
+    }
+    setLoading(false);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -35,7 +65,7 @@ export default function AddHotelPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
+    setSaving(true);
 
     // Validate required fields
     if (
@@ -47,26 +77,36 @@ export default function AddHotelPage() {
       !formData.region
     ) {
       setError("Please fill in all required fields");
-      setLoading(false);
+      setSaving(false);
       return;
     }
 
     // Validate postal code is 5 digits
     if (!/^\d{5}$/.test(formData.postalcode)) {
       setError("Postal code must be exactly 5 digits");
-      setLoading(false);
+      setSaving(false);
       return;
     }
 
-    const result = await createHotel(formData, token);
+    const result = await updateHotel(hotelId, formData, token);
 
     if (result.success) {
       router.push("/admin/hotels");
     } else {
-      setError(result.message || "Failed to add hotel. Please try again.");
-      setLoading(false);
+      setError(result.message || "Failed to update hotel. Please try again.");
+      setSaving(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-[calc(100vh-44px)] bg-gray-50 py-8">
+        <div className="mx-auto max-w-2xl px-4">
+          <div className="text-center text-gray-500">Loading hotel...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-44px)] bg-gray-50 py-8">
@@ -91,7 +131,7 @@ export default function AddHotelPage() {
               />
             </svg>
           </Link>
-          <h1 className="text-2xl font-semibold text-gray-800">Add New Hotel</h1>
+          <h1 className="text-2xl font-semibold text-gray-800">Edit Hotel</h1>
         </div>
 
         {/* Form */}
@@ -228,10 +268,10 @@ export default function AddHotelPage() {
             <div className="flex gap-3 pt-4">
               <button
                 type="submit"
-                disabled={loading}
+                disabled={saving}
                 className="flex-1 rounded-lg bg-blue-500 py-2.5 text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50"
               >
-                {loading ? "Adding..." : "Add Hotel"}
+                {saving ? "Saving..." : "Save Changes"}
               </button>
               <Link
                 href="/admin/hotels"

@@ -2,112 +2,73 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-interface Booking {
-  _id: string;
-  userId: string;
-  userName: string;
-  hotelId: string;
-  hotelName: string;
-  hotelLocation: string;
-  checkIn: string;
-  checkOut: string;
-  roomCount: number;
-  guestCount: number;
-  status: string;
-  createdAt: string;
-}
+import { useSession } from "next-auth/react";
+import {
+  getAllBookings,
+  updateBooking,
+  deleteBooking,
+  Booking,
+} from "@/libs/adminApi";
 
 export default function AdminBookingsPage() {
+  const { data: session } = useSession();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [editingBooking, setEditingBooking] = useState<Booking | null>(null);
+  const [formData, setFormData] = useState({ checkInDate: "", nights: 1 });
+  const [submitting, setSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  const token = session?.user?.token || "";
+
   useEffect(() => {
-    loadBookings();
-  }, []);
+    if (token) {
+      loadBookings();
+    }
+  }, [token]);
 
   const loadBookings = async () => {
     setLoading(true);
-    try {
-      const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
-      const response = await fetch(`${baseUrl}/api/v1/bookings`, {
-        method: "GET",
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success && data.data) {
-          setBookings(data.data);
-        } else {
-          // Fallback to mock data if API doesn't return bookings
-          setBookings([
-            {
-              _id: "1",
-              userId: "user1",
-              userName: "John Doe",
-              hotelId: "hotel1",
-              hotelName: "Grand Palace Hotel",
-              hotelLocation: "Phra Nakhon, Bangkok",
-              checkIn: "Apr 15, 2026",
-              checkOut: "Apr 17, 2026",
-              roomCount: 1,
-              guestCount: 2,
-              status: "confirmed",
-              createdAt: "Mar 15, 2026",
-            },
-            {
-              _id: "2",
-              userId: "user1",
-              userName: "John Doe",
-              hotelId: "hotel2",
-              hotelName: "Mountain View Lodge",
-              hotelLocation: "Mueang, Chiang Mai",
-              checkIn: "May 20, 2026",
-              checkOut: "May 23, 2026",
-              roomCount: 1,
-              guestCount: 1,
-              status: "confirmed",
-              createdAt: "Mar 16, 2026",
-            },
-          ]);
-        }
-      }
-    } catch (error) {
-      console.error("Error loading bookings:", error);
-      // Set mock data on error
-      setBookings([
-        {
-          _id: "1",
-          userId: "user1",
-          userName: "John Doe",
-          hotelId: "hotel1",
-          hotelName: "Grand Palace Hotel",
-          hotelLocation: "Phra Nakhon, Bangkok",
-          checkIn: "Apr 15, 2026",
-          checkOut: "Apr 17, 2026",
-          roomCount: 1,
-          guestCount: 2,
-          status: "confirmed",
-          createdAt: "Mar 15, 2026",
-        },
-        {
-          _id: "2",
-          userId: "user1",
-          userName: "John Doe",
-          hotelId: "hotel2",
-          hotelName: "Mountain View Lodge",
-          hotelLocation: "Mueang, Chiang Mai",
-          checkIn: "May 20, 2026",
-          checkOut: "May 23, 2026",
-          roomCount: 1,
-          guestCount: 1,
-          status: "confirmed",
-          createdAt: "Mar 16, 2026",
-        },
-      ]);
+    const result = await getAllBookings(token);
+    if (result.success && result.data) {
+      setBookings(result.data);
     }
     setLoading(false);
+  };
+
+  const handleOpenEdit = (booking: Booking) => {
+    setEditingBooking(booking);
+    setFormData({
+      checkInDate: booking.checkInDate.split("T")[0],
+      nights: booking.nights,
+    });
+    setShowModal(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingBooking) return;
+
+    setSubmitting(true);
+
+    const result = await updateBooking(
+      editingBooking._id,
+      {
+        checkInDate: new Date(formData.checkInDate).toISOString(),
+        nights: formData.nights,
+      },
+      token
+    );
+
+    if (result.success) {
+      await loadBookings();
+      setShowModal(false);
+    } else {
+      alert(result.message || "Failed to update booking");
+    }
+
+    setSubmitting(false);
   };
 
   const handleDelete = async (bookingId: string) => {
@@ -116,171 +77,224 @@ export default function AdminBookingsPage() {
     }
 
     setDeletingId(bookingId);
-    try {
-      const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || process.env.BACKEND_BASE_URL;
-      const response = await fetch(`${baseUrl}/api/v1/bookings/${bookingId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        setBookings(bookings.filter((b) => b._id !== bookingId));
-      } else {
-        alert("Failed to delete booking");
-      }
-    } catch (error) {
-      console.error("Error deleting booking:", error);
-      alert("Error deleting booking");
-    } finally {
-      setDeletingId(null);
+    const result = await deleteBooking(bookingId, token);
+    if (result.success) {
+      setBookings(bookings.filter((b) => b._id !== bookingId));
+    } else {
+      alert(result.message || "Failed to delete booking");
     }
+    setDeletingId(null);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[var(--surface-page)] py-8">
-        <div className="mx-auto w-[var(--general-width)]">
-          <div className="text-center text-[#8a909a]">Loading bookings...</div>
+      <div className="min-h-[calc(100vh-44px)] bg-gray-50 py-8">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-center text-gray-500">Loading bookings...</div>
         </div>
-      </main>
+      </div>
     );
   }
 
-  const calculateNights = (checkIn: string, checkOut: string) => {
-    try {
-      const start = new Date(checkIn);
-      const end = new Date(checkOut);
-      const nights = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-      return nights > 0 ? nights : 1;
-    } catch {
-      return 1;
-    }
-  };
-
   return (
-    <main className="min-h-screen bg-[var(--surface-page)]">
-      <div className="mx-auto w-[var(--general-width)] py-8 md:py-12">
+    <div className="min-h-[calc(100vh-44px)] bg-gray-50 py-8">
+      <div className="mx-auto max-w-6xl px-4">
+        {/* Header */}
+        <div className="mb-6 flex items-center gap-4">
+          <Link
+            href="/admin"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-gray-500 shadow hover:bg-gray-50"
+          >
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </Link>
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-800">
+              All Bookings
+            </h1>
+            <p className="text-sm text-gray-500">
+              {bookings.length} bookings in the system
+            </p>
+          </div>
+        </div>
 
         {/* Bookings Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-[#e5e7eb] overflow-hidden">
-          {bookings.length === 0 ? (
-            <div className="p-8 text-center">
-              <p className="text-[#8a909a]">No bookings found. Create one to get started!</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-[#e5e7eb] bg-[#f9fafb]">
-                    <th className="px-6 py-3 text-left font-semibold text-[#6b7280]">
-                      User
-                    </th>
-                    <th className="px-6 py-3 text-left font-semibold text-[#6b7280]">
-                      Hotel
-                    </th>
-                    <th className="px-6 py-3 text-left font-semibold text-[#6b7280]">
-                      Location
-                    </th>
-                    <th className="px-6 py-3 text-left font-semibold text-[#6b7280]">
-                      Check-in
-                    </th>
-                    <th className="px-6 py-3 text-left font-semibold text-[#6b7280]">
-                      Nights
-                    </th>
-                    <th className="px-6 py-3 text-left font-semibold text-[#6b7280]">
-                      Created
-                    </th>
-                    <th className="px-6 py-3 text-left font-semibold text-[#6b7280]">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bookings.map((booking, index) => (
-                    <tr
-                      key={booking._id}
-                      className={`border-b border-[#e5e7eb] hover:bg-[#f9fafb] transition-colors ${
-                        index === bookings.length - 1 ? "border-b-0" : ""
-                      }`}
+        <div className="overflow-hidden rounded-lg bg-white shadow">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                    ID
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                    User
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                    Hotel
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                    Check-in
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                    Nights
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
+                    Created
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {bookings.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={7}
+                      className="px-4 py-8 text-center text-gray-500"
                     >
-                      <td className="px-6 py-4 text-[var(--text-heading)]">
-                        <div className="flex items-center gap-2">
-                          <span>👤</span>
-                          {booking.userName}
+                      No bookings found
+                    </td>
+                  </tr>
+                ) : (
+                  bookings.map((booking) => (
+                    <tr key={booking._id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 text-xs text-gray-500">
+                        {booking._id.slice(-6)}
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="text-sm font-medium text-gray-900">
+                          {booking.user?.name || "Unknown"}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {booking.user?.email}
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-[var(--text-heading)]">
-                        {booking.hotelName}
+                      <td className="px-4 py-3 text-sm text-gray-600">
+                        {booking.hotel?.name || "Unknown Hotel"}
                       </td>
-                      <td className="px-6 py-4 text-[#6b7280]">
-                        {booking.hotelLocation}
+                      <td className="px-4 py-3 text-sm text-gray-600">
+                        {formatDate(booking.checkInDate)}
                       </td>
-                      <td className="px-6 py-4 text-[#6b7280]">
-                        {booking.checkIn}
+                      <td className="px-4 py-3 text-sm text-gray-600">
+                        {booking.nights}
                       </td>
-                      <td className="px-6 py-4 text-[#6b7280]">
-                        {calculateNights(booking.checkIn, booking.checkOut)}
+                      <td className="px-4 py-3 text-sm text-gray-600">
+                        {formatDate(booking.createdAt)}
                       </td>
-                      <td className="px-6 py-4 text-[#6b7280]">
-                        {booking.createdAt}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-3">
-                          <Link
-                            href={`/admin/bookings/edit/${booking._id}`}
-                            className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
-                            title="Edit booking"
-                          >
-                            <svg
-                              className="w-5 h-5"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                              />
-                            </svg>
-                          </Link>
-                          <button
-                            onClick={() => handleDelete(booking._id)}
-                            disabled={deletingId === booking._id}
-                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
-                            title="Delete booking"
-                          >
-                            <svg
-                              className="w-5 h-5"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              />
-                            </svg>
-                          </button>
-                        </div>
+                      <td className="px-4 py-3 text-right">
+                        <button
+                          onClick={() => handleOpenEdit(booking)}
+                          className="mr-2 rounded bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 hover:bg-blue-100"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(booking._id)}
+                          disabled={deletingId === booking._id}
+                          className="rounded bg-red-50 px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-100 disabled:opacity-50"
+                        >
+                          {deletingId === booking._id ? "..." : "Delete"}
+                        </button>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      <footer className="border-t border-[#d6d8dc] py-8 text-center text-xs text-[#8a909a] mt-12">
-        © 2028 HotelBook. All rights reserved.
-      </footer>
-    </main>
+      {/* Edit Modal */}
+      {showModal && editingBooking && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="mx-4 w-full max-w-md rounded-lg bg-white p-6">
+            <h2 className="mb-4 text-lg font-semibold text-gray-800">
+              Edit Booking
+            </h2>
+            <div className="mb-4 rounded-lg bg-gray-50 p-3">
+              <p className="text-sm font-medium text-gray-800">
+                {editingBooking.hotel?.name}
+              </p>
+              <p className="text-xs text-gray-500">
+                Guest: {editingBooking.user?.name} ({editingBooking.user?.email})
+              </p>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="mb-1 block text-sm text-gray-600">
+                  Check-in Date
+                </label>
+                <input
+                  type="date"
+                  required
+                  value={formData.checkInDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, checkInDate: e.target.value })
+                  }
+                  className="w-full rounded-lg border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm text-gray-600">
+                  Number of Nights (1-3)
+                </label>
+                <select
+                  value={formData.nights}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      nights: parseInt(e.target.value),
+                    })
+                  }
+                  className="w-full rounded-lg border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                >
+                  <option value={1}>1 night</option>
+                  <option value={2}>2 nights</option>
+                  <option value={3}>3 nights</option>
+                </select>
+              </div>
+              <div className="flex justify-end gap-2 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50"
+                >
+                  {submitting ? "Saving..." : "Update Booking"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

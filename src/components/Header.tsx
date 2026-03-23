@@ -41,9 +41,32 @@ export default async function TopMenu() {
 
           {session ? (
             <>
-              <Link className="hover:text-[var(--brand-500)]" href="/booking">
-                My Bookings
-              </Link>
+              {user.role === "admin" && (
+                <Link
+                  className="flex items-center gap-1.5 hover:text-[var(--brand-500)]"
+                  href="/admin"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-4 w-4"
+                  >
+                    <path d="M12 4.5a2.5 2.5 0 00-4.96-.46 2.5 2.5 0 00-1.98 3 2.5 2.5 0 00-1.32 4.24 3 3 0 00.34 5.58 2.5 2.5 0 002.96 3.08A2.5 2.5 0 009.5 22h5a2.5 2.5 0 002.46-2.06 2.5 2.5 0 002.96-3.08 3 3 0 00.34-5.58 2.5 2.5 0 00-1.32-4.24 2.5 2.5 0 00-1.98-3A2.5 2.5 0 0012 4.5" />
+                    <path d="M12 12v9" />
+                    <path d="M12 12L9 9m3 3l3-3" />
+                  </svg>
+                  Admin
+                </Link>
+              )}
+              {user.role === "user" && (
+                <Link className="hover:text-[var(--brand-500)]" href="/booking">
+                  My Bookings
+                </Link>
+              )}
               <Link
                 href="/profile"
                 className="flex items-center gap-1.5 hover:text-[var(--brand-500)]"
