@@ -7,7 +7,7 @@ import {
   getAllBookings,
   updateBooking,
   deleteBooking,
-  Booking,
+  Booking
 } from "@/libs/adminApi";
 
 export default function AdminBookingsPage() {
@@ -49,7 +49,7 @@ export default function AdminBookingsPage() {
     setEditingBooking(booking);
     setFormData({
       checkInDate: booking.checkInDate.split("T")[0],
-      nights: booking.nights,
+      nights: booking.nights
     });
     setShowModal(true);
   };
@@ -63,8 +63,8 @@ export default function AdminBookingsPage() {
     const result = await updateBooking(
       editingBooking._id,
       {
-        checkInDate: new Date(formData.checkInDate).toISOString(),
-        nights: formData.nights,
+        checkInDate: new Date(formData.checkInDate).toISOString().split("T")[0],
+        nights: formData.nights
       },
       token
     );
@@ -98,7 +98,7 @@ export default function AdminBookingsPage() {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
-      day: "numeric",
+      day: "numeric"
     });
   };
 
@@ -272,7 +272,8 @@ export default function AdminBookingsPage() {
                 {editingBooking.hotel?.name}
               </p>
               <p className="text-xs text-gray-500">
-                Guest: {editingBooking.user?.name} ({editingBooking.user?.email})
+                Guest: {editingBooking.user?.name} ({editingBooking.user?.email}
+                )
               </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -299,7 +300,7 @@ export default function AdminBookingsPage() {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      nights: parseInt(e.target.value),
+                      nights: parseInt(e.target.value)
                     })
                   }
                   className="w-full rounded-lg border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
