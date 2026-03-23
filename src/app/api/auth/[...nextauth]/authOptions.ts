@@ -44,9 +44,9 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       // On login, spread user data into token to include role
       if (user) {
-        console.log("JWT Callback - User received:", user);
+        // console.log("JWT Callback - User received:", user);
         const newToken = { ...token, ...user };
-        console.log("JWT Callback - Token after spread:", newToken);
+        // console.log("JWT Callback - Token after spread:", newToken);
         return newToken;
       }
       return token;
