@@ -13,7 +13,7 @@ export default async function TopMenu() {
         </div>
         {session ? (
           <div>
-            <Link className="mx-[8px]" href="/hotels">
+            <Link className="mx-[8px] underline" href="/hotels">
               Hotels
             </Link>
             <Link
@@ -36,7 +36,7 @@ export default async function TopMenu() {
           </div>
         ) : (
           <div>
-            <Link className="mx-[8px]" href="/hotels">
+            <Link className="mx-[8px] underline" href="/hotels">
               Hotels
             </Link>
             <Link
