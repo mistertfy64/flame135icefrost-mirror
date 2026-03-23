@@ -5,7 +5,7 @@ import HotelCard from "./HotelCard";
 const hotelGradients = [
   "linear-gradient(145deg, #5b3a29 0%, #9f7455 38%, #d8c0a2 100%)",
   "linear-gradient(145deg, #724e3a 0%, #9b7d66 34%, #8ab5ce 67%, #f3be86 100%)",
-  "linear-gradient(145deg, #0e2c4b 0%, #1e4b78 28%, #4f7db0 58%, #f0b272 100%)",
+  "linear-gradient(145deg, #0e2c4b 0%, #1e4b78 28%, #4f7db0 58%, #f0b272 100%)"
 ];
 
 export default async function FeaturedHotelCardPanel() {
@@ -38,7 +38,7 @@ export default async function FeaturedHotelCardPanel() {
             postalcode={hotel.postalcode}
             region={hotel.region}
             heroStyle={{
-              background: hotelGradients[index % hotelGradients.length],
+              background: hotelGradients[index % hotelGradients.length]
             }}
           />
         ))}
@@ -52,12 +52,16 @@ export default async function FeaturedHotelCardPanel() {
           Create an account to start booking hotels instantly
         </p>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-          <button className="cursor-pointer rounded-md bg-black px-6 py-2 text-sm font-medium text-white hover:bg-[#1f1f1f]">
-            Register Now
-          </button>
-          <button className="cursor-pointer rounded-md border border-white px-6 py-2 text-sm font-medium text-white hover:bg-white hover:text-[var(--cta-500)]">
-            Login
-          </button>
+          <Link href="/register">
+            <button className="cursor-pointer rounded-md bg-black px-6 py-2 text-sm font-medium text-white hover:bg-[#1f1f1f]">
+              Register Now
+            </button>
+          </Link>
+          <Link href="/login">
+            <button className="cursor-pointer rounded-md border border-white px-6 py-2 text-sm font-medium text-white hover:bg-white hover:text-[var(--cta-500)]">
+              Login
+            </button>
+          </Link>
         </div>
       </div>
     </section>
