@@ -12,6 +12,8 @@ import Link from "next/link";
 import getDifferenceInDays from "@/app/libs/getDifferenceInDays";
 
 export default function EditBookingPage() {
+  const ONE_DAY = 1000 * 60 * 60 * 24;
+
   const router = useRouter();
   const params = useParams();
   const bookingId = params?.id as string;
@@ -55,8 +57,13 @@ export default function EditBookingPage() {
               setIsOwner(true);
               setFormData({
                 hotelId: booking.hotelId,
-                checkInDate: booking.checkIn.split("T")[0],
-                checkOutDate: booking.checkOutDate.split("T")[0],
+                checkInDate: booking.checkInDate.split("T")[0],
+                checkOutDate: new Date(
+                  new Date(booking.checkInDate).getTime() +
+                    booking.nights * ONE_DAY
+                )
+                  .toISOString()
+                  .split("T")[0],
                 roomCount: booking.roomCount,
                 guestCount: booking.guestCount
               });
@@ -212,38 +219,6 @@ export default function EditBookingPage() {
                 />
               </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
-                  Number of Rooms *
-                </label>
-                <input
-                  type="number"
-                  name="roomCount"
-                  value={formData.roomCount}
-                  onChange={handleInputChange}
-                  min="1"
-                  className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
-                  Number of Guests *
-                </label>
-                <input
-                  type="number"
-                  name="guestCount"
-                  value={formData.guestCount}
-                  onChange={handleInputChange}
-                  min="1"
-                  className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
-                  required
-                />
-              </div>
-            </div>
-
             <div className="flex gap-3 pt-4">
               <button
                 type="submit"

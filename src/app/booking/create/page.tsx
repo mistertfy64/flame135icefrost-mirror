@@ -137,38 +137,6 @@ export default function CreateBookingPage() {
                 />
               </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
-                  Number of Rooms *
-                </label>
-                <input
-                  type="number"
-                  name="roomCount"
-                  value={formData.roomCount}
-                  onChange={handleInputChange}
-                  min="1"
-                  className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
-                  Number of Guests *
-                </label>
-                <input
-                  type="number"
-                  name="guestCount"
-                  value={formData.guestCount}
-                  onChange={handleInputChange}
-                  min="1"
-                  className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
-                  required
-                />
-              </div>
-            </div>
-
             <div className="flex gap-3 pt-4">
               <button
                 type="submit"
