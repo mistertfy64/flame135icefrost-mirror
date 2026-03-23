@@ -36,7 +36,8 @@ export const authOptions: AuthOptions = {
   ],
   pages: {
     signIn: "/login",
-    signOut: "/logout"
+    signOut: "/logout",
+    error: "/login"
   },
   session: { strategy: "jwt" },
   callbacks: {
