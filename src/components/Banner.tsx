@@ -2,15 +2,18 @@ import FrontPageSearch from "./FrontPageSearch";
 
 export default function Banner() {
   return (
-    <div className="w-full bg-primary flex justify-center items-center h-[50vh] md:h-[30vh]">
-      <div className="w-[var(--general-width)] text-white">
-        <h1 className="text-4xl">Find your perfect stay!</h1>
-        <h2 className="text-xl">
-          Book amazing hotels across Thailand with ease!
+    <section className="flex min-h-[360px] w-full items-center bg-gradient-to-r from-[var(--hero-start)] to-[var(--hero-end)]">
+      <div className="mx-auto w-[var(--general-width)] py-14 text-white">
+        <h1 className="text-4xl font-bold leading-tight text-[#ffd160] md:text-6xl">
+          Find Your Perfect Stay!!
+        </h1>
+        <h2 className="mt-4 text-lg text-[#d7f0ff] md:text-2xl">
+          Book amazing hotels across Thailand with ease
         </h2>
-        <br />
+        <div className="mt-6 md:max-w-[680px]">
         <FrontPageSearch />
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

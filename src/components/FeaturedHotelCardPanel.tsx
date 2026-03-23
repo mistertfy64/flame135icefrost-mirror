@@ -1,25 +1,75 @@
 import HotelCard from "./HotelCard";
 
 export default function FeaturedHotelCardPanel() {
+  const featuredHotels = [
+    {
+      name: "Grand Palace Hotel",
+      location: "Phra Nakhon, Bangkok 10200",
+      tel: "02-123-4567",
+      heroStyle: {
+        background:
+          "linear-gradient(145deg, #5b3a29 0%, #9f7455 38%, #d8c0a2 100%)",
+      },
+    },
+    {
+      name: "Sunset Beach Resort",
+      location: "Kathu, Phuket 83120",
+      tel: "076-345-678",
+      heroStyle: {
+        background:
+          "linear-gradient(145deg, #724e3a 0%, #9b7d66 34%, #8ab5ce 67%, #f3be86 100%)",
+      },
+    },
+    {
+      name: "Mountain View Lodge",
+      location: "Mueang, Chiang Mai 50200",
+      tel: "053-456-789",
+      heroStyle: {
+        background:
+          "linear-gradient(145deg, #0e2c4b 0%, #1e4b78 28%, #4f7db0 58%, #f0b272 100%)",
+      },
+    },
+  ];
+
   return (
-    <div className="w-full">
-      <div className="flex flex-row justify-between">
-        <HotelCard
-          name="mistertfy64's Hotel"
-          location="Equation Playground"
-          tel="1234567890"
-        />
-        <HotelCard
-          name="Meep2447's Hotel"
-          location="Dream Island, Goiky"
-          tel="2447244724"
-        />
-        <HotelCard
-          name="kaikubez's Hotel"
-          location="The Grasslands, Goiky"
-          tel="1111111111"
-        />
+    <section className="w-full">
+      <div className="mb-4 flex items-center justify-between md:mb-5">
+        <h2 className="text-3xl font-semibold text-[var(--text-heading)] md:text-4xl">
+          Featured Hotels
+        </h2>
+        <button className="cursor-pointer text-sm font-medium text-[var(--brand-500)] hover:text-[var(--brand-600)]">
+          View All -&gt;
+        </button>
       </div>
-    </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {featuredHotels.map((hotel) => (
+          <HotelCard
+            key={hotel.name}
+            name={hotel.name}
+            location={hotel.location}
+            tel={hotel.tel}
+            heroStyle={hotel.heroStyle}
+          />
+        ))}
+      </div>
+
+      <div className="mt-8 rounded-[var(--radius-panel)] bg-[var(--cta-500)] px-4 py-8 text-center text-white md:px-10 md:py-10">
+        <h3 className="text-4xl font-semibold leading-tight md:text-5xl">
+          Ready to Book Your Next Adventure?
+        </h3>
+        <p className="mt-2 text-sm text-[#ffe6d1]">
+          Create an account to start booking hotels instantly
+        </p>
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+          <button className="cursor-pointer rounded-md bg-black px-6 py-2 text-sm font-medium text-white hover:bg-[#1f1f1f]">
+            Register Now
+          </button>
+          <button className="cursor-pointer rounded-md border border-white px-6 py-2 text-sm font-medium text-white hover:bg-white hover:text-[var(--cta-500)]">
+            Login
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }

@@ -2,12 +2,12 @@
 
 export default function FrontPageSearch() {
   return (
-    <div className="flex flex-col md:flex-row md:w-[42.5%] md:justify-between">
+    <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
       <input
-        placeholder="Search for a hotel..."
-        className="bg-white text-black p-[8px] text-xl rounded-md my-[4px] md:mr-[8px] md:my-[0px] md:flex-grow"
-      ></input>
-      <button className="cursor-pointer bg-emerald-700 rounded-md px-[16px] py-[8px] text-xl">
+        placeholder="Search by hotel name, city, or region..."
+        className="h-11 flex-1 rounded-md border border-transparent bg-white px-4 text-sm text-[#1e2934] outline-none placeholder:text-[#9aa1ab] focus:border-[#99d8f7]"
+      />
+      <button className="h-11 cursor-pointer rounded-md bg-[#f5a147] px-7 text-sm font-semibold text-white hover:bg-[#e39038]">
         Search
       </button>
     </div>

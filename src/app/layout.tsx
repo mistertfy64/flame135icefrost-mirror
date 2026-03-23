@@ -29,7 +29,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body className={`${sarabun.className} bg-stone-50`}>
+      <body className={sarabun.className}>
         <NextAuthProvider session={nextAuthSession}>
           <Header />
           <ThemeProvider theme={theme}>{children}</ThemeProvider>

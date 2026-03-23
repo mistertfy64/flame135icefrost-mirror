@@ -3,14 +3,16 @@ import FeaturedHotelCardPanel from "@/components/FeaturedHotelCardPanel";
 
 export default function Home() {
   return (
-    <div>
+    <div className="min-h-screen bg-[var(--surface-page)]">
       <Banner />
-      <br />
-      <div className="w-full flex justify-center">
-        <div className="w-[var(--general-width)]">
-          <FeaturedHotelCardPanel />
-        </div>
-      </div>
+
+      <main className="mx-auto w-[var(--general-width)] py-8 md:py-10">
+        <FeaturedHotelCardPanel />
+      </main>
+
+      <footer className="border-t border-[#d6d8dc] py-8 text-center text-xs text-[#8a909a]">
+        © 2026 HotelBook. All rights reserved.
+      </footer>
     </div>
   );
 }

@@ -11,5 +11,27 @@
 }
 
 :root {
-  --general-width: 80%;
+  --general-width: min(1120px, 88vw);
+
+  --surface-page: #e6e7e9;
+  --surface-header: #f7f8fa;
+  --surface-card: #ffffff;
+
+  --brand-500: #1da2df;
+  --brand-600: #148bc2;
+  --hero-start: #1b9bd8;
+  --hero-end: #0485cb;
+  --cta-500: #f98a2c;
+  --text-heading: #1c2128;
+  --text-muted: #7a818b;
+
+  --radius-panel: 16px;
+  --radius-card: 12px;
+
+  --space-section: clamp(32px, 4vw, 48px);
+}
+
+body {
+  color: var(--text-heading);
+  background: var(--surface-page);
 }
