@@ -9,7 +9,7 @@ export default async function AdminPage() {
 
   const [hotelsResult, bookingsResult] = await Promise.all([
     getAllHotels(token),
-    getAllBookings(token),
+    getAllBookings(token)
   ]);
 
   const hotels = hotelsResult.data || [];
@@ -20,7 +20,7 @@ export default async function AdminPage() {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
-      day: "numeric",
+      day: "numeric"
     });
   };
 
@@ -112,7 +112,9 @@ export default async function AdminPage() {
                 <p className="text-2xl font-bold text-gray-800">
                   {new Set(bookings.map((b) => b.user?._id)).size}
                 </p>
-                <p className="text-sm text-gray-500">Total Users</p>
+                <p className="text-sm text-gray-500">
+                  Total Users with Bookings
+                </p>
               </div>
             </div>
           </div>
