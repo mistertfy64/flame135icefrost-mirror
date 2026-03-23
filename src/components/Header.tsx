@@ -9,23 +9,23 @@ export default async function TopMenu() {
 
   return (
     <header className="w-full flex justify-center py-[4px] bg-white">
-      <div className="w-[var(--general-width)] h-[4vh] flex justify-between items-center">
+      <div className="w-[var(--general-width)] sm:[8vh]  md:h-[4vh] flex justify-between items-center">
         <div>
           <Link href="/">Group135</Link>
         </div>
         {session ? (
-          <div>
-            <Link className="mx-[8px] underline" href="/hotels">
+          <div className="flex flex-col md:flex-row items-end md:items-center">
+            <Link className="ml-[8px] underline" href="/hotels">
               Hotels
             </Link>
             <Link
-              className="mx-[8px] text-primary underline cursor-pointer"
+              className="ml-[8px] text-primary underline cursor-pointer"
               href="/logout"
             >
               Logout
             </Link>
             <Link
-              className="mx-[8px] text-primary underline cursor-pointer"
+              className="ml-[8px] text-primary underline cursor-pointer"
               href="/me"
             >
               {me.data.name}
@@ -37,12 +37,12 @@ export default async function TopMenu() {
             </Link>
           </div>
         ) : (
-          <div>
-            <Link className="mx-[8px] underline" href="/hotels">
+          <div className="flex flex-col md:flex-row items-end md:items-center">
+            <Link className="ml-[8px] underline" href="/hotels">
               Hotels
             </Link>
             <Link
-              className="mx-[8px] text-primary underline cursor-pointer"
+              className="ml-[8px] text-primary underline cursor-pointer"
               href="/login"
             >
               Login
