@@ -45,7 +45,7 @@ export default function LoginForm() {
           type="password"
           onChange={(event) => setPassword(event.target.value)}
         />
-        {errorMessage ?? <br />}
+        <span className="py-[2px] text-red-400">{errorMessage ?? <br />}</span>
         <button
           onClick={handleLogin}
           className="cursor-pointer rounded-md bg-primary text-white px-[16px] py-[8px] text-lg"
