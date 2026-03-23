@@ -13,7 +13,11 @@ export default function LoginForm() {
 
   const handleLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const result = await signIn("credentials", { email, password });
+    const result = await signIn("credentials", {
+      email,
+      password,
+      callbackUrl: "/"
+    });
 
     if (result?.error) {
       router.push("/login");
