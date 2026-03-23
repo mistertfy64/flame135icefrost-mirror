@@ -1,26 +1,24 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import TextField from "@mui/material/TextField";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { SyntheticEvent, useState } from "react";
 
 export default function LoginForm() {
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const errorMessage = searchParams.get("error");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const result = await signIn("credentials", { email, password });
-
-    if (result?.error) {
-      router.push("/login");
-      return;
-    }
-
-    router.push("/");
+    await signIn("credentials", {
+      email,
+      password,
+      callbackUrl: "/"
+    });
   };
 
   return (
@@ -47,7 +45,7 @@ export default function LoginForm() {
           type="password"
           onChange={(event) => setPassword(event.target.value)}
         />
-        <br />
+        <span className="py-[2px] text-red-400">{errorMessage ?? <br />}</span>
         <button
           onClick={handleLogin}
           className="cursor-pointer rounded-md bg-primary text-white px-[16px] py-[8px] text-lg"
