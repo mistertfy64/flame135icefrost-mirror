@@ -1,9 +1,11 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import getMe from "@/libs/getMe";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 export default async function TopMenu() {
   const session = await getServerSession(authOptions);
+  const me = (await getMe(session?.user.token)) || {};
 
   return (
     <header className="w-full flex justify-center py-[4px] bg-white">
@@ -26,7 +28,7 @@ export default async function TopMenu() {
               className="mx-[8px] text-primary underline cursor-pointer"
               href="/me"
             >
-              {"Unknown User Name"}
+              {me.data.name}
             </Link>
             <Link className="ml-[8px] text-text-primary " href="/register">
               <button className="cursor-pointer rounded-md bg-primary text-text px-[16px] py-[4px]">
