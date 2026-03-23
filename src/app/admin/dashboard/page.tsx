@@ -225,10 +225,6 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
-
-      <footer className="border-t border-[#d6d8dc] py-8 text-center text-xs text-[#8a909a] mt-12">
-        © 2028 HotelBook. All rights reserved.
-      </footer>
     </main>
   );
 }
