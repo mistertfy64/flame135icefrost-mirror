@@ -22,11 +22,17 @@ export default async function userLogin(
     throw new Error(result.msg);
   }
 
+  // Trim token to remove any whitespace
+  const token = result.token?.trim();
+  if (!token) {
+    throw new Error("No token received from login");
+  }
+
   // Fetch user profile to get role and other details
   const meResponse = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${result.token}`
+      Authorization: `Bearer ${token}`
     }
   });
 
@@ -42,6 +48,6 @@ export default async function userLogin(
     name: meResult.data.name,
     email: meResult.data.email,
     role: meResult.data.role,
-    token: result.token
+    token: token
   };
 }

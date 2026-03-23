@@ -13,8 +13,7 @@ export default async function userRegister(
   };
 
   const API_BASE_URL =
-    process.env.BACKEND_BASE_URL ||
-    "https://flame135icefrost-backend.vercel.app";
+    process.env.BACKEND_BASE_URL || process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
   const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
     method: "POST",
     headers: {
@@ -24,5 +23,6 @@ export default async function userRegister(
   });
 
   const result = await response.json();
+  console.log("Registration result:", result);
   return result;
 }
