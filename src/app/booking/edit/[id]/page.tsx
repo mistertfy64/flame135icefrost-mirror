@@ -51,7 +51,7 @@ export default function EditBookingPage() {
           if (data.success && data.data) {
             const booking = data.data;
             // Check if current user is the owner
-            if (booking.userId === session.user._id) {
+            if (booking.user === session.user._id) {
               setIsOwner(true);
               setFormData({
                 hotelId: booking.hotelId,
