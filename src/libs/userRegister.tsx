@@ -1,8 +1,8 @@
 export default async function userRegister(
   fullName: string,
   userEmail: string,
-  userPassword: string,
-  phoneNumber: string
+  phoneNumber: string,
+  userPassword: string
 ) {
   const data = {
     name: fullName,
