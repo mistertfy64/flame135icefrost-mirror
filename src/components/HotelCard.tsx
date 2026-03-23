@@ -21,8 +21,8 @@ export default function HotelCard(props: HotelProp) {
       </div>
       <div className="px-[12px] py-[4px]">
         <div className="text-black text-xl">{props.name}</div>
-        <div className="text-gray-600 text-md">{props.location}</div>
-        <div className="text-gray-600 text-md">{props.tel}</div>
+        <div className="text-text-secondary text-md">{props.location}</div>
+        <div className="text-text-secondary text-md">{props.tel}</div>
         <div className="my-[4px]">
           <button className="cursor-pointer w-full py-[4px] bg-primary text-white rounded-lg">
             View Details
