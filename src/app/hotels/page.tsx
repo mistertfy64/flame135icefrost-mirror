@@ -12,7 +12,7 @@ const hotelGradients = [
   "linear-gradient(145deg, #0e2c4b 0%, #1e4b78 28%, #4f7db0 58%, #f0b272 100%)",
   "linear-gradient(145deg, #6b4c3a 0%, #9b7d66 34%, #c9a878 100%)",
   "linear-gradient(145deg, #1a3a52 0%, #2d5a7b 50%, #5a8acc 100%)",
-  "linear-gradient(145deg, #4a3d2a 0%, #8b6f47 50%, #d4a574 100%)",
+  "linear-gradient(145deg, #4a3d2a 0%, #8b6f47 50%, #d4a574 100%)"
 ];
 
 export default function HotelsPage() {
@@ -204,7 +204,8 @@ export default function HotelsPage() {
         ) : (
           <>
             <p className="mb-6 text-sm text-[#8a909a]">
-              Found {filteredHotels.length} hotel{filteredHotels.length !== 1 ? "s" : ""}
+              Found {filteredHotels.length} hotel
+              {filteredHotels.length !== 1 ? "s" : ""}
             </p>
 
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -220,9 +221,9 @@ export default function HotelsPage() {
                   postalcode={hotel.postalcode}
                   region={hotel.region}
                   heroStyle={{
-                    background:
-                      hotelGradients[index % hotelGradients.length],
+                    background: hotelGradients[index % hotelGradients.length]
                   }}
+                  imageURL={hotel?.imgSrc || ""}
                 />
               ))}
             </div>

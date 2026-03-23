@@ -183,6 +183,8 @@ export default function AdminHotelsPage() {
                     <Image
                       src={hotel.imgSrc}
                       alt={hotel.name}
+                      width={0}
+                      height={0}
                       className="h-full w-full object-cover"
                     />
                   ) : (
