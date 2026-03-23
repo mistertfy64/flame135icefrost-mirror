@@ -56,14 +56,6 @@ export default async function BookingPage() {
                             booking.nights * ONE_DAY
                         ).toLocaleDateString()}
                       </div>
-                      <div>
-                        <span className="font-medium">Rooms:</span>{" "}
-                        {booking.roomCount}
-                      </div>
-                      <div>
-                        <span className="font-medium">Guests:</span>{" "}
-                        {booking.guestCount}
-                      </div>
                     </div>
                     {booking.status && (
                       <div className="mt-3">
