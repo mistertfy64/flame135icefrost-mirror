@@ -5,7 +5,8 @@ import Link from "next/link";
 import { SyntheticEvent, useState } from "react";
 
 export default function LoginForm() {
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const errorMessage = searchParams.get("error");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

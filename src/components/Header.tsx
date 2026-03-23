@@ -1,6 +1,12 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import getMe from "@/libs/getMe";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 
-export default function TopMenu() {
+export default async function TopMenu() {
+  const session = await getServerSession(authOptions);
+  const me = (await getMe(session?.user.token)) || {};
+
   return (
     <header className="w-full border-b border-[#d6d8dc] bg-[var(--surface-header)]">
       <div className="mx-auto flex h-[44px] w-[var(--general-width)] items-center justify-between">

@@ -1,6 +1,6 @@
 import RegisterForm from "@/components/RegisterForm";
 
-export default function Register() {
+export default function RegisterPage() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--surface-page)]">
       <div className="absolute inset-0 bg-[linear-gradient(135deg,#0c8fd0_0%,#0a5bb7_100%)] opacity-5" />
