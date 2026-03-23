@@ -8,6 +8,7 @@ export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const errorMessage = searchParams.get("error");
+  const registered = searchParams.get("registered");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,6 +33,18 @@ export default function LoginForm() {
       className="rounded-2xl border border-white/20 bg-white/95 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.1)] backdrop-blur-sm"
     >
       <div className="space-y-5">
+        {registered && (
+          <div className="rounded-lg bg-green-50 p-3 text-sm text-green-700">
+            Registration successful! Please sign in.
+          </div>
+        )}
+
+        {errorMessage && (
+          <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+            Invalid email or password
+          </div>
+        )}
+
         <div>
           <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
             Email Address
