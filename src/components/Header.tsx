@@ -26,7 +26,7 @@ export default async function TopMenu() {
             </Link>
             <Link
               className="ml-[8px] text-primary underline cursor-pointer"
-              href="/me"
+              href="/profile"
             >
               {me.data.name}
             </Link>
