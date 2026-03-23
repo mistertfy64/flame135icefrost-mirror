@@ -52,16 +52,14 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log("Session Callback - Token:", token);
       // Explicitly set user fields from token
       session.user = {
         _id: token._id as string,
         name: token.name as string,
         email: token.email as string,
         role: token.role as string,
-        token: token.token as string,
+        token: token.token as string
       } as any;
-      console.log("Session Callback - Final session.user:", session.user);
       return session;
     }
   }
