@@ -2,7 +2,7 @@
 
 import LogoutForm from "@/components/LogoutForm";
 
-export default function LogoutButton() {
+export default function LogoutPage() {
   return (
     <div className="flex justify-center flex-col items-center">
       <h1 className="text-4xl">Log Out</h1>
