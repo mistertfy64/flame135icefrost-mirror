@@ -7,6 +7,7 @@ import LogoutForm from "./LogoutForm";
 export default async function TopMenu() {
   const session = await getServerSession(authOptions);
   const me = (await getMe(session?.user.token)) || {};
+  const user = me.data || {};
 
   return (
     <header className="w-full border-b border-[#d6d8dc] bg-[var(--surface-header)]">
@@ -39,13 +40,30 @@ export default async function TopMenu() {
           </Link>
 
           {session ? (
-            <div className="flex items-center gap-3">
+            <>
               <Link className="hover:text-[var(--brand-500)]" href="/booking">
                 My Bookings
               </Link>
-              <span className="text-sm text-[#35404d]">{me?.email}</span>
+              <Link
+                href="/profile"
+                className="flex items-center gap-1.5 hover:text-[var(--brand-500)]"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                >
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+                </svg>
+                <span>{user.name || "User"}</span>
+              </Link>
               <LogoutForm />
-            </div>
+            </>
           ) : (
             <>
               <Link className="hover:text-[var(--brand-500)]" href="/login">

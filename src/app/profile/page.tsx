@@ -1,38 +1,54 @@
 import getMe from "@/libs/getMe";
 import { getServerSession } from "next-auth";
-import Link from "next/link";
 import { authOptions } from "../api/auth/[...nextauth]/authOptions";
+import ProfileLogoutButton from "@/components/ProfileLogoutButton";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
   const me = (await getMe(session?.user.token)) || {};
+  const user = me.data || {};
+
+  const getInitial = (name: string) => {
+    return name ? name.charAt(0).toUpperCase() : "U";
+  };
 
   return (
-    <div className="flex justify-center flex-col items-center">
-      <h1 className="text-4xl">My Profile</h1>
-      <div className="bg-white w-[37.5%] p-[16px] mt-[8px] rounded-lg shadow-lg">
-        <div className="flex flex-col justify-center">
-          <div className="px-[4px] py-[16px]">
-            <p className="text-lg">
-              {me.data.role === "admin" ? "Administrator" : ""}
-            </p>
-            <p className="text-3xl">{me.data.name}</p>
-            <p className="text-text-secondary">Joined on {me.data.createdAt}</p>
+    <div className="flex min-h-[calc(100vh-44px)] flex-col items-center bg-gray-50 py-12">
+      <h1 className="mb-6 text-2xl font-semibold text-gray-800">My Profile</h1>
+
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
+        {/* Avatar and Name Section */}
+        <div className="flex flex-col items-center pb-6">
+          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-blue-500 text-3xl font-bold text-white">
+            {getInitial(user.name)}
           </div>
-          <hr />
-          <div className="py-[8px]">
-            <ul>
-              <li className="px-[4px]">E-mail Address: {me.data.email}</li>
-              <li className="px-[4px]">Phone Number: {me.data.tel}</li>
-            </ul>
-          </div>
-          <hr />
+          <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
+          <span className="mt-1 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
+            {user.role === "admin" ? "Administrator" : "User Account"}
+          </span>
+        </div>
+
+        {/* Divider */}
+        <hr className="border-gray-200" />
+
+        {/* User Details Section */}
+        <div className="space-y-4 py-6">
           <div>
-            <Link className="px-[4px] text-primary underline" href="/logout">
-              Log out?
-            </Link>
+            <p className="text-sm text-gray-500">Full Name</p>
+            <p className="text-gray-800">{user.name}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Email</p>
+            <p className="text-gray-800">{user.email}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Telephone</p>
+            <p className="text-gray-800">{user.tel || "-"}</p>
           </div>
         </div>
+
+        {/* Logout Button */}
+        <ProfileLogoutButton />
       </div>
     </div>
   );
