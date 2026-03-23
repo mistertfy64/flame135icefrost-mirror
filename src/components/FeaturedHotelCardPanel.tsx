@@ -32,6 +32,11 @@ export default async function FeaturedHotelCardPanel() {
             name={hotel.name}
             location={formatHotelLocation(hotel)}
             tel={hotel.tel}
+            address={hotel.address}
+            district={hotel.district}
+            province={hotel.province}
+            postalcode={hotel.postalcode}
+            region={hotel.region}
             heroStyle={{
               background: hotelGradients[index % hotelGradients.length],
             }}

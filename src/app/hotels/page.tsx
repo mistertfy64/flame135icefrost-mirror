@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import HotelCard from "@/components/HotelCard";
 import type { Hotel } from "@/libs/hotelApi";
@@ -20,6 +20,9 @@ export default function HotelsPage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState("");
 
   useEffect(() => {
     const query = searchParams.get("search") || "";
@@ -36,13 +39,37 @@ export default function HotelsPage() {
     loadHotels();
   }, []);
 
-  const filteredHotels = hotels.filter(
-    (hotel) =>
+  const provinces = useMemo(() => {
+    const unique = [...new Set(hotels.map((h) => h.province).filter(Boolean))];
+    return unique.sort();
+  }, [hotels]);
+
+  const regions = useMemo(() => {
+    const unique = [...new Set(hotels.map((h) => h.region).filter(Boolean))];
+    return unique.sort();
+  }, [hotels]);
+
+  const filteredHotels = hotels.filter((hotel) => {
+    const matchesSearch =
       hotel.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       hotel.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
       hotel.province.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      hotel.district.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      hotel.district.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesProvince =
+      !selectedProvince || hotel.province === selectedProvince;
+
+    const matchesRegion = !selectedRegion || hotel.region === selectedRegion;
+
+    return matchesSearch && matchesProvince && matchesRegion;
+  });
+
+  const clearFilters = () => {
+    setSelectedProvince("");
+    setSelectedRegion("");
+  };
+
+  const hasActiveFilters = selectedProvince || selectedRegion;
 
   return (
     <main className="min-h-screen bg-[var(--surface-page)] py-8 md:py-12">
@@ -64,22 +91,111 @@ export default function HotelsPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="h-11 flex-1 rounded-lg border border-[#d6d8dc] bg-white px-4 text-sm placeholder:text-[#9aa1ab] focus:border-[var(--brand-500)] focus:outline-none"
           />
-          <button className="h-11 rounded-lg bg-[#d6d8dc] px-4 text-[#7a818b] hover:bg-[#cbcdd1]">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-5 w-5"
+          <div className="relative">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`h-11 rounded-lg px-4 hover:bg-[#cbcdd1] ${
+                hasActiveFilters
+                  ? "bg-[var(--brand-500)] text-white hover:bg-[var(--brand-600)]"
+                  : "bg-[#d6d8dc] text-[#7a818b]"
+              }`}
             >
-              <line x1="4" y1="6" x2="20" y2="6" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="18" x2="20" y2="18" />
-            </svg>
-          </button>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-5 w-5"
+              >
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="18" x2="20" y2="18" />
+              </svg>
+            </button>
+
+            {showFilters && (
+              <div className="absolute right-0 top-full z-10 mt-2 w-72 rounded-lg border border-[#d6d8dc] bg-white p-4 shadow-lg">
+                <div className="mb-4 flex items-center justify-between">
+                  <h3 className="font-medium text-[#1d232b]">Filters</h3>
+                  {hasActiveFilters && (
+                    <button
+                      onClick={clearFilters}
+                      className="text-xs text-[var(--brand-500)] hover:underline"
+                    >
+                      Clear all
+                    </button>
+                  )}
+                </div>
+
+                <div className="mb-4">
+                  <label className="mb-1.5 block text-xs font-medium text-[#7a818b]">
+                    Province
+                  </label>
+                  <select
+                    value={selectedProvince}
+                    onChange={(e) => setSelectedProvince(e.target.value)}
+                    className="h-10 w-full rounded-md border border-[#d6d8dc] bg-white px-3 text-sm focus:border-[var(--brand-500)] focus:outline-none"
+                  >
+                    <option value="">All Provinces</option>
+                    {provinces.map((province) => (
+                      <option key={province} value={province}>
+                        {province}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-[#7a818b]">
+                    Region
+                  </label>
+                  <select
+                    value={selectedRegion}
+                    onChange={(e) => setSelectedRegion(e.target.value)}
+                    className="h-10 w-full rounded-md border border-[#d6d8dc] bg-white px-3 text-sm focus:border-[var(--brand-500)] focus:outline-none"
+                  >
+                    <option value="">All Regions</option>
+                    {regions.map((region) => (
+                      <option key={region} value={region}>
+                        {region}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
+
+        {hasActiveFilters && (
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            <span className="text-sm text-[#7a818b]">Active filters:</span>
+            {selectedProvince && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--brand-100)] px-3 py-1 text-xs text-[var(--brand-700)]">
+                {selectedProvince}
+                <button
+                  onClick={() => setSelectedProvince("")}
+                  className="ml-1 hover:text-[var(--brand-900)]"
+                >
+                  ×
+                </button>
+              </span>
+            )}
+            {selectedRegion && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--brand-100)] px-3 py-1 text-xs text-[var(--brand-700)]">
+                {selectedRegion}
+                <button
+                  onClick={() => setSelectedRegion("")}
+                  className="ml-1 hover:text-[var(--brand-900)]"
+                >
+                  ×
+                </button>
+              </span>
+            )}
+          </div>
+        )}
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
@@ -98,6 +214,11 @@ export default function HotelsPage() {
                   name={hotel.name}
                   location={formatHotelLocation(hotel)}
                   tel={hotel.tel}
+                  address={hotel.address}
+                  district={hotel.district}
+                  province={hotel.province}
+                  postalcode={hotel.postalcode}
+                  region={hotel.region}
                   heroStyle={{
                     background:
                       hotelGradients[index % hotelGradients.length],

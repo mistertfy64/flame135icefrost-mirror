@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 import type { CSSProperties } from "react";
 
 interface HotelProp {
@@ -7,9 +10,16 @@ interface HotelProp {
   tel: string;
   imageURL?: string;
   heroStyle?: CSSProperties;
+  address?: string;
+  district?: string;
+  province?: string;
+  postalcode?: string;
+  region?: string;
 }
 
 export default function HotelCard(props: HotelProp) {
+  const [showDetails, setShowDetails] = useState(false);
+
   return (
     <article className="overflow-hidden rounded-xl border border-[#d9dbdf] bg-white shadow-sm">
       <div
@@ -64,9 +74,124 @@ export default function HotelCard(props: HotelProp) {
           </div>
         </div>
 
+        {showDetails && (
+          <div className="mt-3 border-t border-[#e5e7eb] pt-3 text-[11px] text-[#7b818a]">
+            {props.address && (
+              <div className="flex items-start gap-1.5 mb-1.5">
+                <span className="inline-flex h-3.5 w-3.5 items-center justify-center shrink-0 mt-0.5">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-3 w-3"
+                  >
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" />
+                    <polyline points="9,22 9,12 15,12 15,22" />
+                  </svg>
+                </span>
+                <span><strong>Address:</strong> {props.address}</span>
+              </div>
+            )}
+            {props.district && (
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <span className="inline-flex h-3.5 w-3.5 items-center justify-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-3 w-3"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  </svg>
+                </span>
+                <span><strong>District:</strong> {props.district}</span>
+              </div>
+            )}
+            {props.province && (
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <span className="inline-flex h-3.5 w-3.5 items-center justify-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-3 w-3"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                </span>
+                <span><strong>Province:</strong> {props.province}</span>
+              </div>
+            )}
+            {props.postalcode && (
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <span className="inline-flex h-3.5 w-3.5 items-center justify-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-3 w-3"
+                  >
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </span>
+                <span><strong>Postal Code:</strong> {props.postalcode}</span>
+              </div>
+            )}
+            {props.region && (
+              <div className="flex items-center gap-1.5">
+                <span className="inline-flex h-3.5 w-3.5 items-center justify-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-3 w-3"
+                  >
+                    <polygon points="3,6 9,3 15,6 21,3 21,18 15,21 9,18 3,21" />
+                    <line x1="9" y1="3" x2="9" y2="18" />
+                    <line x1="15" y1="6" x2="15" y2="21" />
+                  </svg>
+                </span>
+                <span><strong>Region:</strong> {props.region}</span>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="mt-2.5">
-          <button className="w-full cursor-pointer rounded-md bg-[#29a3de] py-1.5 text-[12px] font-medium text-white hover:bg-[#1d8dc2]">
-            View Details
+          <button
+            onClick={() => setShowDetails(!showDetails)}
+            className="w-full cursor-pointer rounded-md bg-[#29a3de] py-1.5 text-[12px] font-medium text-white hover:bg-[#1d8dc2] flex items-center justify-center gap-1.5"
+          >
+            {showDetails ? "Hide Details" : "View Details"}
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`h-3 w-3 transition-transform ${showDetails ? "rotate-180" : ""}`}
+            >
+              <polyline points="6,9 12,15 18,9" />
+            </svg>
           </button>
         </div>
       </div>
