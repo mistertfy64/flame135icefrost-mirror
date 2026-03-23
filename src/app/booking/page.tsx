@@ -43,7 +43,7 @@ export default async function BookingPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-[var(--text-heading)]">
-                      {booking.hotelName || "Hotel Booking"}
+                      {booking.hotel?.name || "Hotel Booking"}
                     </h3>
                     <div className="mt-3 grid grid-cols-2 gap-4 text-sm text-[#8a909a]">
                       <div>
