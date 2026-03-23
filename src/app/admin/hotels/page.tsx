@@ -10,6 +10,7 @@ export default function AdminHotelsPage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const token = session?.user?.token || "";
 
@@ -27,6 +28,13 @@ export default function AdminHotelsPage() {
     }
     setLoading(false);
   };
+
+  const filteredHotels = hotels.filter(
+    (hotel) =>
+      hotel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      hotel.province.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      hotel.district.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleDelete = async (hotelId: string, hotelName: string) => {
     if (
@@ -86,7 +94,7 @@ export default function AdminHotelsPage() {
                 Manage Hotels
               </h1>
               <p className="text-sm text-gray-500">
-                {hotels.length} hotels in the system
+                {filteredHotels.length} of {hotels.length} hotels
               </p>
             </div>
           </div>
@@ -111,8 +119,34 @@ export default function AdminHotelsPage() {
           </Link>
         </div>
 
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative">
+            <svg
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search hotels by name, province, or district..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+
         {/* Hotels Grid */}
-        {hotels.length === 0 ? (
+        {filteredHotels.length === 0 ? (
           <div className="rounded-lg bg-white p-12 text-center shadow">
             <svg
               className="mx-auto h-12 w-12 text-gray-400"
@@ -137,7 +171,7 @@ export default function AdminHotelsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {hotels.map((hotel) => (
+            {filteredHotels.map((hotel) => (
               <div
                 key={hotel._id}
                 className="overflow-hidden rounded-lg bg-white shadow"
