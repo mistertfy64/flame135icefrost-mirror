@@ -16,10 +16,11 @@ export default async function userLogin(
     body: JSON.stringify(data)
   });
 
-  // TODO: Give a reason to the user?
-  if (!response.ok) {
-    throw new Error("Failed to log in.");
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.msg);
   }
 
-  return await response.json();
+  return result;
 }
