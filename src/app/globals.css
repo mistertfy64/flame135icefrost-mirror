@@ -8,6 +8,9 @@
 @theme {
   --color-primary: oklch(64.5% 0.246 16.439);
   --color-text-primary: white;
+
+  /* gray-600 */
+  --color-text-secondary: oklch(44.6% 0.03 256.802);
 }
 
 :root {
