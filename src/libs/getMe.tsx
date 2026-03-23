@@ -8,5 +8,9 @@ export default async function getMe(token: string) {
     }
   });
 
+  if (!response.ok) {
+    return {};
+  }
+
   return await response.json();
 }
