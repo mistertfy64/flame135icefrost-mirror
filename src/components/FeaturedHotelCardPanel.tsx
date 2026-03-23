@@ -1,4 +1,5 @@
 import { fetchTopBookedHotels, formatHotelLocation } from "@/libs/hotelApi";
+import Link from "next/link";
 import HotelCard from "./HotelCard";
 
 const hotelGradients = [
@@ -16,9 +17,12 @@ export default async function FeaturedHotelCardPanel() {
         <h2 className="text-3xl font-semibold text-[var(--text-heading)] md:text-4xl">
           Featured Hotels
         </h2>
-        <button className="cursor-pointer text-sm font-medium text-[var(--brand-500)] hover:text-[var(--brand-600)]">
+        <Link
+          href="/hotels"
+          className="cursor-pointer text-sm font-medium text-[var(--brand-500)] hover:text-[var(--brand-600)]"
+        >
           View All -&gt;
-        </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

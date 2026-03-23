@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import HotelCard from "@/components/HotelCard";
 import type { Hotel } from "@/libs/hotelApi";
 import { fetchAllHotels, formatHotelLocation } from "@/libs/hotelApi";
@@ -15,9 +16,15 @@ const hotelGradients = [
 ];
 
 export default function HotelsPage() {
+  const searchParams = useSearchParams();
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const query = searchParams.get("search") || "";
+    setSearchTerm(query);
+  }, [searchParams]);
 
   useEffect(() => {
     const loadHotels = async () => {
