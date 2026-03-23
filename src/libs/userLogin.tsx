@@ -44,6 +44,7 @@ export default async function userLogin(
 
   // Return combined data with user profile and token
   return {
+    id: meResult.data._id,
     _id: meResult.data._id,
     name: meResult.data.name,
     email: meResult.data.email,
