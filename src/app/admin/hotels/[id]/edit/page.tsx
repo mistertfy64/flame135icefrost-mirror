@@ -31,7 +31,8 @@ export default function EditHotelPage() {
     if (token && hotelId) {
       loadHotel();
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const loadHotel = async () => {
     setLoading(true);

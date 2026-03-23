@@ -18,7 +18,8 @@ export default function AdminHotelsPage() {
     if (token) {
       loadHotels();
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const loadHotels = async () => {
     setLoading(true);
