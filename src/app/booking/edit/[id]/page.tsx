@@ -11,9 +11,9 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import getDifferenceInDays from "@/app/libs/getDifferenceInDays";
 
-export default function EditBookingPage() {
-  const ONE_DAY = 1000 * 60 * 60 * 24;
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
+export default function EditBookingPage() {
   const router = useRouter();
   const params = useParams();
   const bookingId = params?.id as string;

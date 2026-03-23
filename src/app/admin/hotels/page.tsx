@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -18,7 +18,7 @@ export default function AdminHotelsPage() {
     if (token) {
       loadHotels();
     }
-  }, [token]);
+  });
 
   const loadHotels = async () => {
     setLoading(true);
@@ -179,7 +179,7 @@ export default function AdminHotelsPage() {
                 {/* Hotel Image */}
                 <div className="h-40 bg-gray-200">
                   {hotel.imgSrc ? (
-                    <img
+                    <Image
                       src={hotel.imgSrc}
                       alt={hotel.name}
                       className="h-full w-full object-cover"

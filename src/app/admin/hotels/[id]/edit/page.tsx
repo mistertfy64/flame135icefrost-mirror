@@ -22,7 +22,7 @@ export default function EditHotelPage() {
     postalcode: "",
     tel: "",
     region: "",
-    imgSrc: "",
+    imgSrc: ""
   });
 
   const token = session?.user?.token || "";
@@ -31,7 +31,7 @@ export default function EditHotelPage() {
     if (token && hotelId) {
       loadHotel();
     }
-  }, [token, hotelId]);
+  });
 
   const loadHotel = async () => {
     setLoading(true);
@@ -46,7 +46,7 @@ export default function EditHotelPage() {
         postalcode: hotel.postalcode,
         tel: hotel.tel || "",
         region: hotel.region,
-        imgSrc: hotel.imgSrc || "",
+        imgSrc: hotel.imgSrc || ""
       });
     } else {
       setError("Failed to load hotel");
@@ -58,7 +58,7 @@ export default function EditHotelPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
