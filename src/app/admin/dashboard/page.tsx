@@ -23,7 +23,7 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<StatCard[]>([
     {
       title: "Total Hotels",
-      value: 6,
+      value: 0,
       icon: "🏨",
       color: "bg-blue-100"
     },
@@ -35,36 +35,19 @@ export default function AdminDashboard() {
     },
     {
       title: "Total Users",
-      value: 2,
+      value: 0,
       icon: "👥",
       color: "bg-orange-100"
     },
     {
       title: "Active Bookings",
-      value: 2,
+      value: 0,
       icon: "⚡",
       color: "bg-purple-100"
     }
   ]);
 
-  const [recentBookings, setRecentBookings] = useState<Booking[]>([
-    {
-      id: "1",
-      user: "John Doe",
-      hotel: "Mountain View Lodge",
-      checkInDate: "May 20, 2026",
-      nights: 3,
-      created: "Mar 16, 2026"
-    },
-    {
-      id: "2",
-      user: "John Doe",
-      hotel: "Grand Palace Hotel",
-      checkInDate: "Apr 15, 2026",
-      nights: 2,
-      created: "Mar 15, 2026"
-    }
-  ]);
+  const [recentBookings, setRecentBookings] = useState<Booking[]>([]);
 
   const [loading, setLoading] = useState(true);
 
