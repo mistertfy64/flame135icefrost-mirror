@@ -198,7 +198,7 @@ export default function EditBookingPage() {
                 </label>
                 <input
                   type="date"
-                  name="checkIn"
+                  name="checkInDate"
                   value={formData.checkInDate}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
