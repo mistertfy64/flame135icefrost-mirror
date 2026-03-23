@@ -11,6 +11,7 @@ export interface Hotel {
   region: string;
   bookings: Array<unknown>;
   id: string;
+  imgSrc?: string;
 }
 
 export interface HotelsResponse {
