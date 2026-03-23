@@ -7,8 +7,8 @@ export default async function userLogin(
     password: userPassword
   };
 
-  // TODO: Fill in URL.
-  const response = await fetch(``, {
+  const API_BASE_URL = process.env.BACKEND_BASE_URL;
+  const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
