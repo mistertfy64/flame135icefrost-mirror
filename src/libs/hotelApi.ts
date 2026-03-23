@@ -1,4 +1,4 @@
-const API_URL = "https://flame135icefrost-backend.vercel.app/api/v1/hotels";
+const API_URL = `${process.env.BACKEND_BASE_URL}/api/v1/hotels`;
 
 export interface Hotel {
   _id: string;
