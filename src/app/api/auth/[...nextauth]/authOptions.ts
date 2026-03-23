@@ -36,16 +36,32 @@ export const authOptions: AuthOptions = {
   ],
   pages: {
     signIn: "/login",
-    signOut: "/logout",
+    signOut: "/",
     error: "/login"
   },
   session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
-      return { ...token, ...user };
+      // On login, spread user data into token to include role
+      if (user) {
+        console.log("JWT Callback - User received:", user);
+        const newToken = { ...token, ...user };
+        console.log("JWT Callback - Token after spread:", newToken);
+        return newToken;
+      }
+      return token;
     },
     async session({ session, token }) {
-      session.user = token;
+      console.log("Session Callback - Token:", token);
+      // Explicitly set user fields from token
+      session.user = {
+        _id: token._id as string,
+        name: token.name as string,
+        email: token.email as string,
+        role: token.role as string,
+        token: token.token as string,
+      } as any;
+      console.log("Session Callback - Final session.user:", session.user);
       return session;
     }
   }

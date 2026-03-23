@@ -22,5 +22,26 @@ export default async function userLogin(
     throw new Error(result.msg);
   }
 
-  return result;
+  // Fetch user profile to get role and other details
+  const meResponse = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${result.token}`
+    }
+  });
+
+  const meResult = await meResponse.json();
+
+  if (!meResult.success) {
+    throw new Error(meResult.msg || "Failed to fetch user profile");
+  }
+
+  // Return combined data with user profile and token
+  return {
+    _id: meResult.data._id,
+    name: meResult.data.name,
+    email: meResult.data.email,
+    role: meResult.data.role,
+    token: result.token
+  };
 }

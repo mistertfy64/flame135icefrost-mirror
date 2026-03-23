@@ -40,6 +40,9 @@ export default async function TopMenu() {
 
           {session ? (
             <div className="flex items-center gap-3">
+              <Link className="hover:text-[var(--brand-500)]" href="/booking">
+                My Bookings
+              </Link>
               <span className="text-sm text-[#35404d]">{me?.email}</span>
               <LogoutForm />
             </div>
