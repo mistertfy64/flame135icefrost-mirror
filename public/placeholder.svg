@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="placeholderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f4f8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#placeholderGrad)"/>
+  <g opacity="0.3">
+    <rect x="120" y="80" width="160" height="120" fill="none" stroke="#1da2df" stroke-width="2" rx="8"/>
+    <circle cx="160" cy="110" r="8" fill="#1da2df"/>
+    <circle cx="200" cy="100" r="6" fill="#1da2df"/>
+    <circle cx="240" cy="115" r="7" fill="#1da2df"/>
+    <path d="M 120 180 L 160 130 L 200 160 L 240 120 L 280 180" stroke="#1da2df" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="200" y="220" font-family="Arial, sans-serif" font-size="16" fill="#7a818b" text-anchor="middle">Hotel Image</text>
+  <text x="200" y="245" font-family="Arial, sans-serif" font-size="12" fill="#9aa1ab" text-anchor="middle">No image available</text>
+</svg>

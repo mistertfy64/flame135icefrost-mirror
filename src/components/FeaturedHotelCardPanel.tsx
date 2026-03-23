@@ -1,35 +1,14 @@
+import { fetchTopBookedHotels, formatHotelLocation } from "@/libs/hotelApi";
 import HotelCard from "./HotelCard";
 
-export default function FeaturedHotelCardPanel() {
-  const featuredHotels = [
-    {
-      name: "Grand Palace Hotel",
-      location: "Phra Nakhon, Bangkok 10200",
-      tel: "02-123-4567",
-      heroStyle: {
-        background:
-          "linear-gradient(145deg, #5b3a29 0%, #9f7455 38%, #d8c0a2 100%)",
-      },
-    },
-    {
-      name: "Sunset Beach Resort",
-      location: "Kathu, Phuket 83120",
-      tel: "076-345-678",
-      heroStyle: {
-        background:
-          "linear-gradient(145deg, #724e3a 0%, #9b7d66 34%, #8ab5ce 67%, #f3be86 100%)",
-      },
-    },
-    {
-      name: "Mountain View Lodge",
-      location: "Mueang, Chiang Mai 50200",
-      tel: "053-456-789",
-      heroStyle: {
-        background:
-          "linear-gradient(145deg, #0e2c4b 0%, #1e4b78 28%, #4f7db0 58%, #f0b272 100%)",
-      },
-    },
-  ];
+const hotelGradients = [
+  "linear-gradient(145deg, #5b3a29 0%, #9f7455 38%, #d8c0a2 100%)",
+  "linear-gradient(145deg, #724e3a 0%, #9b7d66 34%, #8ab5ce 67%, #f3be86 100%)",
+  "linear-gradient(145deg, #0e2c4b 0%, #1e4b78 28%, #4f7db0 58%, #f0b272 100%)",
+];
+
+export default async function FeaturedHotelCardPanel() {
+  const featuredHotels = await fetchTopBookedHotels(3);
 
   return (
     <section className="w-full">
@@ -43,13 +22,15 @@ export default function FeaturedHotelCardPanel() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {featuredHotels.map((hotel) => (
+        {featuredHotels.map((hotel, index) => (
           <HotelCard
-            key={hotel.name}
+            key={hotel._id}
             name={hotel.name}
-            location={hotel.location}
+            location={formatHotelLocation(hotel)}
             tel={hotel.tel}
-            heroStyle={hotel.heroStyle}
+            heroStyle={{
+              background: hotelGradients[index % hotelGradients.length],
+            }}
           />
         ))}
       </div>

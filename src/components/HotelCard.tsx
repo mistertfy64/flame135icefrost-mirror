@@ -13,17 +13,15 @@ export default function HotelCard(props: HotelProp) {
   return (
     <article className="overflow-hidden rounded-xl border border-[#d9dbdf] bg-white shadow-sm">
       <div
-        className="relative h-[140px] w-full rounded-t-xl"
+        className="relative h-[140px] w-full rounded-t-xl overflow-hidden"
         style={props.heroStyle}
       >
-        {props.imageURL ? (
-          <Image
-            src={props.imageURL}
-            alt="Hotel picture"
-            fill={true}
-            className="rounded-t-xl object-cover opacity-45"
-          />
-        ) : null}
+        <Image
+          src={props.imageURL || "/placeholder.svg"}
+          alt={props.imageURL ? "Hotel picture" : "No image available"}
+          fill={true}
+          className="rounded-t-xl object-cover opacity-45"
+        />
       </div>
 
       <div className="px-3 py-2.5">

@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import TextField from "@mui/material/TextField";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { SyntheticEvent, useState } from "react";
@@ -10,13 +9,15 @@ export default function LoginForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
+    setLoading(true);
     const result = await signIn("credentials", { email, password });
 
     if (result?.error) {
-      router.push("/login");
+      setLoading(false);
       return;
     }
 
@@ -24,43 +25,66 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="bg-white w-[37.5%] p-[16px] mt-[8px] rounded-lg shadow-lg">
-      <div className="flex flex-col justify-center">
-        <br />
-        <TextField
-          id="outlined-basic"
-          label="E-mail Address"
-          name="email"
-          variant="outlined"
-          size="small"
-          className="w-full"
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          label="Password"
-          name="password"
-          variant="outlined"
-          size="small"
-          className="w-full"
-          type="password"
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <br />
-        <button
-          onClick={handleLogin}
-          className="cursor-pointer rounded-md bg-primary text-white px-[16px] py-[8px] text-lg"
-        >
-          Login
-        </button>
-        <span className="mt-[4px] text-sm text-center">
-          Don&#39;t have an account? &nbsp;
-          <Link className="text-primary underline" href="/login">
-            Register here!
+    <form
+      onSubmit={handleLogin}
+      className="rounded-2xl border border-white/20 bg-white/95 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.1)] backdrop-blur-sm"
+    >
+      <div className="space-y-5">
+        <div>
+          <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
+            Email Address
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm placeholder:text-[#9aa1ab] focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
+            Password
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm placeholder:text-[#9aa1ab] focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
+            required
+          />
+        </div>
+
+        <div className="flex items-center justify-between text-sm">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" className="w-4 h-4 rounded border-[#d6d8dc]" />
+            <span className="text-[#8a909a]">Remember me</span>
+          </label>
+          <Link href="#" className="text-[var(--brand-500)] hover:text-[var(--brand-600)]">
+            Forgot password?
           </Link>
-        </span>
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-lg bg-[linear-gradient(180deg,#1da2df_0%,#148bc2_100%)] py-3 text-sm font-semibold text-white hover:shadow-lg disabled:opacity-50 transition"
+        >
+          {loading ? "Signing in..." : "Sign In"}
+        </button>
       </div>
-    </div>
+
+      <div className="mt-6 border-t border-[#e8eaed] pt-6 text-center">
+        <p className="text-sm text-[#8a909a]">
+          Don&#39;t have an account?{" "}
+          <Link href="/register" className="font-medium text-[var(--brand-500)] hover:text-[var(--brand-600)]">
+            Create one
+          </Link>
+        </p>
+      </div>
+    </form>
   );
 }

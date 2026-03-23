@@ -1,70 +1,129 @@
 "use client";
 
-import TextField from "@mui/material/TextField";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function RegisterForm() {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [tel, setTel] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+    setLoading(true);
+    // TODO: Implement registration with your BE
+    console.log({ fullName, email, tel, password });
+    setLoading(false);
+  };
+
   return (
-    <div className="bg-white w-[37.5%] p-[16px] mt-[8px] rounded-lg shadow-lg">
-      <div className="flex flex-col justify-center">
-        <TextField
-          id="outlined-basic"
-          label="Full Name"
-          name="fullName"
-          variant="outlined"
-          size="small"
-          className="w-full"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          label="E-mail Address"
-          name="email"
-          variant="outlined"
-          size="small"
-          className="w-full"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          label="Phone Number"
-          name="tel"
-          variant="outlined"
-          size="small"
-          className="w-full"
-          type="tel"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          label="Password"
-          name="password"
-          variant="outlined"
-          size="small"
-          className="w-full"
-          type="password"
-        />
-        <br />
-        <TextField
-          id="outlined-basic"
-          label="Confirm Password"
-          name="confirmPassword"
-          variant="outlined"
-          size="small"
-          className="w-full"
-          type="password"
-        />
-        <br />
-        <button className="cursor-pointer rounded-md bg-primary text-white px-[16px] py-[8px] text-lg">
-          Register
+    <form
+      onSubmit={handleRegister}
+      className="rounded-2xl border border-white/20 bg-white/95 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.1)] backdrop-blur-sm"
+    >
+      <div className="space-y-5">
+        <div>
+          <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
+            Full Name
+          </label>
+          <input
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder="John Doe"
+            className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm placeholder:text-[#9aa1ab] focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
+            Email Address
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm placeholder:text-[#9aa1ab] focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
+            Phone Number
+          </label>
+          <input
+            type="tel"
+            value={tel}
+            onChange={(e) => setTel(e.target.value)}
+            placeholder="+66 8XXXX XXXX"
+            className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm placeholder:text-[#9aa1ab] focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
+            Password
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm placeholder:text-[#9aa1ab] focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-[var(--text-heading)] mb-2">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="••••••••"
+            className="w-full rounded-lg border border-[#d6d8dc] bg-white px-4 py-3 text-sm placeholder:text-[#9aa1ab] focus:border-[var(--brand-500)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-500)]/30"
+            required
+          />
+        </div>
+
+        <label className="flex items-start gap-2 cursor-pointer">
+          <input type="checkbox" className="w-4 h-4 rounded border-[#d6d8dc] mt-0.5" required />
+          <span className="text-xs text-[#8a909a]">
+            I agree to the <span className="font-medium">Terms of Service</span> and{" "}
+            <span className="font-medium">Privacy Policy</span>
+          </span>
+        </label>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-lg bg-[linear-gradient(180deg,#1da2df_0%,#148bc2_100%)] py-3 text-sm font-semibold text-white hover:shadow-lg disabled:opacity-50 transition"
+        >
+          {loading ? "Creating account..." : "Create Account"}
         </button>
-        <span className="mt-[4px] text-sm text-center">
-          Already have an account?{" "}
-          <Link className="text-primary underline" href="/login">
-            Login here!
-          </Link>
-        </span>
       </div>
-    </div>
+
+      <div className="mt-6 border-t border-[#e8eaed] pt-6 text-center">
+        <p className="text-sm text-[#8a909a]">
+          Already have an account?{" "}
+          <Link href="/login" className="font-medium text-[var(--brand-500)] hover:text-[var(--brand-600)]">
+            Sign in
+          </Link>
+        </p>
+      </div>
+    </form>
   );
 }
